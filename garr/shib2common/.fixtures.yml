@@ -1,0 +1,13 @@
+fixtures:
+    #repositories:
+        #stdlib: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
+        #apache: "https://github.com/puppetlabs/puppetlabs-apache.git"
+        #concat: "https://github.com/puppetlabs/puppetlabs-concat.git"
+        #firewall: "https://github.com/puppetlabs/puppetlabs-firewall.git"
+    symlinks:
+        shib2common: "#{source_dir}"
+        tomcat: "../../../../tomcat"
+        stdlib: "../../../../../puppetlabs/stdlib"
+        apache: "../../../../../puppetlabs/apache"
+        concat: "../../../../../puppetlabs/concat"
+        firewall: "../../../../../puppetlabs/firewall"

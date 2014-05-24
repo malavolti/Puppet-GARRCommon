@@ -1,0 +1,40 @@
+{
+  "author": "Andrea Biancini \u003candrea.biancini@garr.it\u003e, Marco Malavolti \u003cmarco.malavolti@garr.it\u003e",
+  "checksums": {
+    "templates/server.xml.tomcat6.erb": "20d74ca1165ab0c6f54bf59e51ecb22a",
+    "files/conf/server.xml": "7bb2adbaea61e5995df9e8b4e47120c9",
+    "files/conf/tomcat-users.xml": "27d6b226347f75ada135cd465d4ec9e9",
+    "templates/README.erb": "ed4325b1daaa6335acd3d6fcb058f963",
+    "templates/setenv.sh.erb": "f6b7f182313216e1e3883962b1b0abb5",
+    "files/conf/web.xml": "726ad42c1cffefa0eaab50789c9321b8",
+    "manifests/definitions/concatfilepart.pp": "22a5e0253673610fda18ac92dc46e4d3",
+    "manifests/definitions/targz.pp": "9f8b04281684ab1e769f141db6ff6700",
+    "Modulefile": "742e1bb6c83cae2f63f719b4ef4b07b8",
+    "templates/tomcat.init.erb": "cf76a6ade9de714c64130032486aa79e",
+    "templates/setenv-local.sh.erb": "6b95fd846a41e7cd6c7028aedf875b8f",
+    "manifests/classes/tomcat7.pp": "7a38aab9d1c0c60f587ee6e7b7049865",
+    "manifests/classes/tomcat6.pp": "c79c25225236cd0f6b3c1a94b02d3319",
+    "templates/web.xml.erb": "0540c4869dd48881ce82829805cc4421",
+    "manifests/definitions/ulimit.pp": "63d0911226e8f6784173559e004de914",
+    "manifests/init.pp": "bf0cb74bf0b84d7c4ff85a3fb5038db1",
+    "manifests/definitions/instance.pp": "46cb1d6c5a2eb911fe796f52713710e6",
+    "files/sample.war": "570f196c4a1025a717269d16d11d6f37",
+    "files/conf/log4j.syslog.properties": "d588a70b85db736ea7aaa76a838b6e7e",
+    "files/conf/log4j.rolling.properties": "4844a8cd93736de610007208cfbf72b4",
+    "manifests/classes/admin.pp": "58e1e2041c1b5a4942b9dcff5ef4e9aa"
+  },
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": "\u003e\u003d3.1.1"
+    }
+  ],
+  "description": "",
+  "license": "Apache 2.0",
+  "name": "garr-tomcat",
+  "project_page": "",
+  "source": "",
+  "summary": "",
+  "types": [],
+  "version": "0.1.0"
+}

@@ -1,0 +1,29 @@
+{
+  "author": "Andrea Biancini \u003candrea.biancini@garr.it\u003e, Marco Malavolti \u003cmarco.malavolti@garr.it\u003e",
+  "checksums": {
+    "manifests/definitions/firewall.pp": "a1c754b83f5cfddfe31f2bc4a3a4ee0b",
+    "manifests/init.pp": "53fb8e9d503675356e10e08f99103c36",
+    "manifests/classes/post.pp": "e82d88bd57ebdf38cd7c498413c1b52f",
+    "manifests/classes/pre.pp": "44d063c41f607e9496600dd43c397ec8",
+    "Modulefile": "2ff81149db2f18a48c8aa2235d931d1e",
+    ".pydevproject": "a612188e29a89bcb72e119d50c0e27e4"
+  },
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": "\u003e\u003d3.1.1"
+    },
+    {
+      "name": "puppetlabs/firewall",
+      "version_requirement": "\u003e\u003d0.0.4"
+    }
+  ],
+  "description": "",
+  "license": "Apache 2.0",
+  "name": "garr-idpfirewall",
+  "project_page": "",
+  "source": "",
+  "summary": "GARR firewall module",
+  "types": [],
+  "version": "0.1.0"
+}

@@ -1,0 +1,4 @@
+Insert here your
+ 
+- $hostname-cert-server.pem 
+- $hostname-key-server.pem

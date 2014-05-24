@@ -1,0 +1,23 @@
+#!/bin/bash
+
+EXPIRYDATE=$(openssl x509 -noout -in puppetclient.example.com.pem -dates | grep notAfter | sed s/notAfter=//g)
+EXPIRYDATE=$(date --date="$EXPIRYDATE")
+
+WARNDATE=$(date -d "+1 month")
+
+echo $WARNDATE
+echo $EXPIRYDATE
+
+DIFF=$(ruby -rdate -e "puts (Date.parse('$EXPIRYDATE') - Date.parse('$WARNDATE') <= 0)")
+
+if [ "$DIFF" == "true" ]
+then
+  # Send message, the certificate is about to expire
+  
+  TEXT="Il certificato per il server <%= hostfqdn %> sta scadendo.\n
+  La data di scadenza del certificato attualmente in vigore è $EXPIRYDATE.\n
+  \n
+  Prima di quella data è necessario provvedere alla richiesta di un rinnovo per il certificato.\n"
+  
+  echo $TEXT | mail -s "Scadenza certificato per <%= hostfqdn %>" <%= mailto %>
+fi

@@ -1,0 +1,12 @@
+name 'garr-shib2common'
+version '0.1.0'
+
+author 'Andrea Biancini <andrea.biancini@garr.it>, Marco Malavolti <marco.malavolti@garr.it>'
+license 'Apache 2.0'
+project_page ''
+source ''
+summary 'A Shibboleth2 puppet module with common components among SP, IdP and DS'
+description ''
+dependency 'puppetlabs/apache', '>=0.5.0-rc1'
+dependency 'puppetlabs/stdlib', '>=3.2.0'
+dependency 'garr/tomcat', '>=0.1.0'

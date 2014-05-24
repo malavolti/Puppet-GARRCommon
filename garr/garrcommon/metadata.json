@@ -1,0 +1,352 @@
+{
+  "author": "Andrea Biancini \u003candrea.biancini@garr.it\u003e, Marco Malavolti \u003cmarco.malavolti@garr.it\u003e",
+  "checksums": {
+    "spec/classes/certificate_spec.rb": "4247632626be92734c0959c51a39ea56",
+    "manifests/classes/java/download.pp": "eb287b04265768812ade44fc7dc73360",
+    "spec/facts/pupmaster_spec.rb": "f9fcbecbfe0e0fff995c855385922539",
+    "files/certs/cert-and-key-here.txt": "bfefe4bce9317ccbb8df6e57cfaec1a9",
+    "manifests/definitions/modifyfileline.pp": "01310ee585c3c04c83086aac9b40fa2a",
+    "lib/puppet/type/execute_mysql.rb": "2c975dec713ab53bb5426e690d536f95",
+    "manifests/classes/prerequisites.pp": "7b5826a5629a2043bc71e8e8ddeecb7b",
+    "spec/spec.opts": "c394777c04fee8e051ce466362042855",
+    "manifests/classes/java/package.pp": "d6aeb43723c71a3c724dcd484bc19139",
+    "spec/spec_helper.rb": "2502293ecbe446077c7e26e85a2634c1",
+    "manifests/classes/certificate.pp": "3ad8292ac1ae22fdf882695f2cb0a541",
+    "manifests/classes/postinstall.pp": "6002dcb94999af9377669c7b20978018",
+    "lib/puppet/type/execute_ldap.rb": "199ab56e180a6917e606c38638a6c636",
+    "lib/augeas/lenses/javasecurity.aug": "e74d8dc72f442c61b81a3c2a270bef71",
+    "spec/classes/prerequisites_spec.rb": "607de9b335a9933201442e80d183496e",
+    "spec/defines/instance_spec.rb": "fd55dd53c9be9732999a6ca2d272f10b",
+    "manifests/init.pp": "e36a4bc832445ef87b96e80648213268",
+    "manifests/definitions/instance.pp": "0a121c6f5971007b61dad7f34b26a462",
+    "lib/puppet/type/add_security_provider.rb": "4627bef5edcd4982492f46b07650beac",
+    "lib/puppet/parser/functions/randomstring.rb": "8565bb80760ea25301e0f842a9164a0b",
+    "lib/puppet/type/apt_repository.rb": "db29e3369713daa6cf2df372a1915b74",
+    "lib/puppet/type/execute_bash.rb": "c7a6e94bddc412e9544426b2ebda3db0",
+    "Rakefile": "3fef45446ed231b2079c2150af424608",
+    "lib/augeas/lenses/webappxml.aug": "baedd1a7504d9870f1644db5b2fe5aad",
+    "Gemfile": "7f500a97c0a3887e17aec3973be2331a",
+    "manifests/classes/java/params.pp": "1c13f84b71499917560285275907960e",
+    "lib/puppet/type/iptables.rb": "a57e55cbfc6f76644f8b5eaa8c0ff2a1",
+    "lib/puppet/type/download_file.rb": "b5dcc9d5047635e257942c1b5caa4082",
+    "Modulefile": "bbfa69cee0a741b6daf612e8fafe082a",
+    ".fixtures.yml": "3c1a4d4d0cb323006135d892656f4e5e",
+    "spec/classes/postinstall_spec.rb": "40c8035c6216d3f92fd4299f313fba3e",
+    "lib/facter/pupmaster.rb": "a47db1db810db8b033d6c81e474c3126",
+    "lib/augeas/lenses/jaas.aug": "537e432a435d61e3735f9cc02a308f4e",
+    "lib/augeas/lenses/tomcatxml.aug": "cb528ddcbdbb7d0845e8b1a76a4ee6eb",
+    "templates/expiry.sh.erb": "d2ab633884532b6e7cfd2078ab1de7a2"
+  },
+  "dependencies": [
+    {
+      "name": "puppetlabs/apache",
+      "version_requirement": "\u003e\u003d0.5.0-rc1"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": "\u003e\u003d3.2.0"
+    },
+    {
+      "name": "garr/tomcat",
+      "version_requirement": "\u003e\u003d0.1.0"
+    }
+  ],
+  "description": "",
+  "license": "Apache 2.0",
+  "name": "garr-garrcommon",
+  "project_page": "",
+  "source": "",
+  "summary": "A Shibboleth2 puppet module with common components among SP, IdP and DS",
+  "types": [
+    {
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "Whether the resource is in sync or not."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "The name of the resource"
+        },
+        {
+          "name": "repository_type",
+          "doc": "The type of repository to be added. Possible values are: \u0027deb\u0027, \u0027deb-src\u0027. Default value is \u0027deb\u0027."
+        },
+        {
+          "name": "repository_url",
+          "doc": "The URL of the repository"
+        },
+        {
+          "name": "repository_targets",
+          "doc": "The targets of the repository. Default value is \u0027main\u0027"
+        },
+        {
+          "name": "sources_file",
+          "doc": "The file where the repository should be added in APT sources. Default value is \u0027sources.list\u0027"
+        },
+        {
+          "name": "key_name",
+          "doc": "The name of the public key to be trusted for the repository."
+        },
+        {
+          "name": "key_file",
+          "doc": "The public key to be trusted for the repository."
+        }
+      ],
+      "providers": [],
+      "name": "apt_repository",
+      "doc": "Add an apt repository and eventually download and trust the public key"
+    },
+    {
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "Whether the resource is insync or not."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "The name of the resource."
+        },
+        {
+          "name": "javasecurity_file",
+          "doc": "The java.security file to modify."
+        },
+        {
+          "name": "providerclasses",
+          "doc": "The provider classes to adds."
+        }
+      ],
+      "providers": [],
+      "name": "add_security_provider",
+      "doc": "Add the security providers into the right position in a java.security file"
+    },
+    {
+      "properties": [],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "The name of the resource"
+        },
+        {
+          "name": "chain",
+          "doc": "holds value of iptables -A parameter.\n                  Possible values are: \u0027INPUT\u0027, \u0027FORWARD\u0027, \u0027OUTPUT\u0027, \u0027PREROUTING\u0027, \u0027POSTROUTING\u0027.\n                  Default value is \u0027INPUT\u0027"
+        },
+        {
+          "name": "table",
+          "doc": "one of the following tables: \u0027nat\u0027, \u0027mangle\u0027,\n                  \u0027filter\u0027 and \u0027raw\u0027. Default one is \u0027filter\u0027"
+        },
+        {
+          "name": "proto",
+          "doc": "holds value of iptables --protocol parameter.\n                  Possible values are: \u0027tcp\u0027, \u0027udp\u0027, \u0027icmp\u0027, \u0027esp\u0027, \u0027ah\u0027, \u0027vrrp\u0027, \u0027igmp\u0027, \u0027all\u0027.\n                  Default value is \u0027tcp\u0027"
+        },
+        {
+          "name": "jump",
+          "doc": "holds value of iptables --jump target\n                  Possible values are: \u0027ACCEPT\u0027, \u0027DROP\u0027, \u0027REJECT\u0027, \u0027DNAT\u0027, \u0027SNAT\u0027, \u0027LOG\u0027, \u0027MASQUERADE\u0027, \u0027REDIRECT\u0027.\n                  Default value is \u0027ACCEPT\u0027. While this is not the accepted norm, this is the more commonly used jump target.\n                  Users should ensure they do an explicit DROP for all packets after all the ACCEPT rules are specified."
+        },
+        {
+          "name": "source",
+          "doc": "value for iptables --source parameter.\n                  Accepts a single string or array."
+        },
+        {
+          "name": "destination",
+          "doc": "value for iptables --destination parameter"
+        },
+        {
+          "name": "sport",
+          "doc": "holds value of iptables [..] --source-port parameter.\n                  If array is specified, values will be passed to multiport module.\n                  Only applies to tcp/udp."
+        },
+        {
+          "name": "dport",
+          "doc": "holds value of iptables [..] --destination-port parameter.\n                  If array is specified, values will be passed to multiport module.\n                  Only applies to tcp/udp."
+        },
+        {
+          "name": "iniface",
+          "doc": "value for iptables --in-interface parameter"
+        },
+        {
+          "name": "outiface",
+          "doc": "value for iptables --out-interface parameter"
+        },
+        {
+          "name": "tosource",
+          "doc": "value for iptables \u0027-j SNAT --to-source\u0027 parameter"
+        },
+        {
+          "name": "todest",
+          "doc": "value for iptables \u0027-j DNAT --to-destination\u0027 parameter"
+        },
+        {
+          "name": "toports",
+          "doc": "value for iptables \u0027-j REDIRECT --to-ports\u0027 parameter"
+        },
+        {
+          "name": "reject",
+          "doc": "value for iptables \u0027-j REJECT --reject-with\u0027 parameter"
+        },
+        {
+          "name": "log_level",
+          "doc": "value for iptables \u0027-j LOG --log-level\u0027 parameter"
+        },
+        {
+          "name": "log_prefix",
+          "doc": "value for iptables \u0027-j LOG --log-prefix\u0027 parameter"
+        },
+        {
+          "name": "icmp",
+          "doc": "value for iptables \u0027-p icmp --icmp-type\u0027 parameter"
+        },
+        {
+          "name": "state",
+          "doc": "value for iptables \u0027-m state --state\u0027 parameter.\n                  Possible values are: \u0027INVALID\u0027, \u0027ESTABLISHED\u0027, \u0027NEW\u0027, \u0027RELATED\u0027.\n                  Also accepts an array of multiple values."
+        },
+        {
+          "name": "limit",
+          "doc": "value for iptables \u0027-m limit --limit\u0027 parameter.\n                  Example values are: \u002750/sec\u0027, \u002740/min\u0027, \u002730/hour\u0027, \u002710/day\u0027."
+        },
+        {
+          "name": "burst",
+          "doc": "value for \u0027--limit-burst\u0027 parameter.\n                  Example values are: \u00275\u0027, \u002710\u0027."
+        },
+        {
+          "name": "redirect",
+          "doc": "value for iptables \u0027-j REDIRECT --to-ports\u0027 parameter."
+        }
+      ],
+      "providers": [],
+      "name": "iptables",
+      "doc": "Manipulate iptables rules"
+    },
+    {
+      "properties": [],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "The name of the action"
+        },
+        {
+          "name": "cwd",
+          "doc": "The current working directory for the script to be executed"
+        },
+        {
+          "name": "command",
+          "doc": "The command to be executed"
+        }
+      ],
+      "providers": [],
+      "name": "execute_bash",
+      "doc": "Execute a bash script only when notified"
+    },
+    {
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "Whether the resource is in sync or not."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "The name of the resource"
+        },
+        {
+          "name": "user",
+          "doc": "The user to connect to the database"
+        },
+        {
+          "name": "password",
+          "doc": "The password to connect to the database"
+        },
+        {
+          "name": "hostname",
+          "doc": "The database host name"
+        },
+        {
+          "name": "dbname",
+          "doc": "The database name"
+        },
+        {
+          "name": "query_check_empty",
+          "doc": "The query that has to be executed to verify the sync status of the resource"
+        },
+        {
+          "name": "sql",
+          "doc": "An array of SQL statements to be executed in on the DB"
+        }
+      ],
+      "providers": [],
+      "name": "execute_mysql",
+      "doc": "Executes SQL code on a mySQL database"
+    },
+    {
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "Whether the resource is in sync or not."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "The name of the new file to be created"
+        },
+        {
+          "name": "url",
+          "doc": "The file\u0027s URL to be downloaded"
+        },
+        {
+          "name": "extract",
+          "doc": "A flag indicating whether the files should be extracted after download or not"
+        },
+        {
+          "name": "execute_command",
+          "doc": "An array of commands to be executed after download"
+        }
+      ],
+      "providers": [],
+      "name": "download_file",
+      "doc": "A new type of resource that downloads a file from an URL and put it on one on the system, existing or not."
+    },
+    {
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "Whether the resource is in sync or not."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "The name of the resource"
+        },
+        {
+          "name": "rootdn",
+          "doc": "The DN to connect to the database"
+        },
+        {
+          "name": "rootpw",
+          "doc": "The password to connect to the database"
+        },
+        {
+          "name": "hostname",
+          "doc": "The database host name"
+        },
+        {
+          "name": "ldif_search",
+          "doc": "The base to be passed to ldapsearch to verify the sync status of the resource"
+        },
+        {
+          "name": "ldif",
+          "doc": "The LDIF string to be sent to the ldapadd command"
+        }
+      ],
+      "providers": [],
+      "name": "execute_ldap",
+      "doc": "Executes ldapadd to add a ldif file"
+    }
+  ],
+  "version": "0.1.0"
+}
