@@ -46,6 +46,7 @@ class shib2common::prerequisites(
         'ca-certificates',
         'unzip',
         'wget',
+        'git',
         'rsyslog',
         'ruby-mysql',
         'expect']:
