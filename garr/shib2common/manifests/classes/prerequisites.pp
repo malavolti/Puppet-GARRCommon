@@ -28,6 +28,14 @@ class shib2common::prerequisites(
   $hostfqdn                = 'idp.example.org',
   $mailto                  = 'support@garr.it',
 ) {
+  
+    # Install packages for Augeas, used by Puppet to configure GARR software
+		class { 'shib2common::augeas':
+		  #augeas_version      => '0.10.0-1~bpo60+3',
+		  #augeas_ruby_version => '0.3.0-1.1',
+		  augeas_version      => 'present',
+		  augeas_ruby_version => 'present',
+		}
 
     exec { 'apt-get update':
       command     => 'apt-get update',
