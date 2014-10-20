@@ -75,24 +75,6 @@ class shib2common::prerequisites(
         class { 'apache::mod::proxy':  }
         class { 'apache::mod::php': }
 
-        file {
-          '/etc/apache2/sites-enabled/default':
-              ensure  => link,
-              target  => '/etc/apache2/sites-available/default',
-              owner   => 'root',
-              group   => 'root',
-              mode    => '0644',
-              notify  => Exec['shib2-apache-restart'];
-
-          '/etc/apache2/sites-enabled/default-ssl':
-              ensure  => link,
-              target  => '/etc/apache2/sites-available/default-ssl',
-              owner   => 'root',
-              group   => 'root',
-              mode    => '0644',
-              notify  => Exec['shib2-apache-restart'];
-        }
-
         if ($install_tomcat == true) {
             # Install Tomcat application server.
             include tomcat
