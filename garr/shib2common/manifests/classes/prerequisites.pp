@@ -71,8 +71,8 @@ class shib2common::prerequisites(
         }
 
         # Install the module SSL, Proxy, Proxy AJP, PHP5
-        class { 'apache::mod::ssl':  }
-        class { 'apache::mod::proxy':  }
+        class { 'apache::mod::ssl': }
+        class { 'apache::mod::proxy': }
         class { 'apache::mod::php': }
 
         if ($install_tomcat == true) {
@@ -97,6 +97,7 @@ class shib2common::prerequisites(
               ssl_cert          => "${shib2common::certificate::cert_directory}/cert-server.pem",
               ssl_key           => "${shib2common::certificate::cert_directory}/key-server.pem",
               ssl_chain         => "${shib2common::certificate::cert_directory}/Terena-chain.pem",
+              ssl_protocol      => 'all -SSLv2 -SSLv3',
               add_listen        => true,
               error_log         => true,
               error_log_file    => 'error.log',
