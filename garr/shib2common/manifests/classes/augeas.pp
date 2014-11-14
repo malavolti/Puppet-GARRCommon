@@ -37,8 +37,20 @@ class shib2common::augeas (
   }
 
   if($lsbdistid == 'Ubuntu'){
-    package { ['augeas-lenses','libaugeas0','augeas-tools','libaugeas-ruby1.8']:
-      ensure => 'present',
+    if ($rubyversion == '1.8.7'){
+      package { ['augeas-lenses','libaugeas0','augeas-tools','libaugeas-ruby1.8']:
+         ensure => 'present',
+      }
+    }
+    # For Ruby 1.9.3
+    else{
+       package { 'libaugeas-ruby1.8':
+         ensure => 'purged',
+       }
+
+       package { ['augeas-lenses','libaugeas0','augeas-tools','ruby-augeas']:
+         ensure => 'present',
+      }
     }
   }
   elsif($lsbdistid == 'Debian' and $lsbdistcodename == 'squeeze'){
@@ -117,5 +129,45 @@ class shib2common::augeas (
       group   => 'root',
       require => Package['augeas-lenses'];
   }
+
+  if ($augeasversion == '0.10.0'){
+   file { 
+    '/usr/share/augeas/lenses/dist/tomcatxml.aug':
+      ensure => present,
+      owner  => root,
+      group  => root,
+      mode   => '644',
+      source => 'puppet:///modules/shib2common/customlenses/tomcatxml_0-10-0.aug',
+      require => File["${lens_dir}/dist"];
+
+    '/usr/share/augeas/lenses/dist/webappxml.aug':
+      ensure => present,
+      owner  => root,
+      group  => root,
+      mode   => '644',
+      source => 'puppet:///modules/shib2common/customlenses/webappxml_0-10-0.aug',
+      require => File["${lens_dir}/dist"];
+   }
+  }
+  if ($augeasversion == '1.2.0'){
+   file { 
+    '/usr/share/augeas/lenses/dist/tomcatxml.aug':
+      ensure => present,
+      owner  => root,
+      group  => root,
+      mode   => '644',
+      source => 'puppet:///modules/shib2common/customlenses/tomcatxml_1-2-0.aug',
+      require => File["${lens_dir}/dist"];
+
+    '/usr/share/augeas/lenses/dist/webappxml.aug':
+      ensure => present,
+      owner  => root,
+      group  => root,
+      mode   => '644',
+      source => 'puppet:///modules/shib2common/customlenses/webappxml_1-2-0.aug',
+      require => File["${lens_dir}/dist"];
+   }
+  }
+
 
 }

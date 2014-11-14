@@ -64,6 +64,14 @@ class shib2common::prerequisites(
     if ($install_apache == true) {
         # Install Apache2 Web server and default modules for Prefork version.
 
+        if ($operatingsystem == 'Ubuntu' and $operatingsystemmajrelease == '14.04'){
+            package { 'apache2-utils':
+               ensure => installed, 
+            }
+
+            ::apache::mod { 'authn_core': }
+        }
+
         class { 'apache':
             default_vhost => false,
             mpm_module    => 'prefork',
