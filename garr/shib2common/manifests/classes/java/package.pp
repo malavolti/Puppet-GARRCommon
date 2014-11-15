@@ -50,6 +50,7 @@ class shib2common::java::package {
 
     'oracle-jdk7-installer':
       ensure  => installed,
+      install_options => '--force-yes',
       require => Exec['agree-to-jdk-license'];
   }
 
