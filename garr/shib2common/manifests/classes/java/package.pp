@@ -62,18 +62,4 @@ class shib2common::java::package {
   $java_dir_name = 'java-7-oracle'
   $java_home     = "/usr/lib/jvm/${shib2common::java::params::java_dir_name}"
 
-  file_line {
-    'java_environment_rule_1':
-      ensure  => present,
-      path    => '/etc/environment',
-      line    => "JAVA_HOME=${java_home}",
-      require => [Package['oracle-java7-installer'], Package['oracle-jdk7-installer']];
-
-    'java_environment_rule_2':
-      ensure  => present,
-      path    => '/etc/environment',
-      line    => 'JAVA_OPTS="-Djava.awt.headless=true -Xmx512M -XX:MaxPermSize=128m"',
-      require => [Package['oracle-java7-installer'], Package['oracle-jdk7-installer']];
-  }
-
 }
