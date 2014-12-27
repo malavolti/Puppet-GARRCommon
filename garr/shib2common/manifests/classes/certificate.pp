@@ -32,9 +32,24 @@ class shib2common::certificate (
   $nagiosserver     = undef,
 ) {
 
-  $curtomcat = $::tomcat::curtomcat
+  #$curtomcat = $::tomcat::curtomcat
   $cert_directory = '/root/certificates'
   $idp_home       = '/opt/shibboleth-idp'
+
+  host {
+   "localhost":
+      ensure => 'present',   
+      target => '/etc/hosts',
+      ip => '127.0.0.1',
+
+   ;
+
+    "$fqdn":
+      ensure => 'present',
+      target => '/etc/hosts',
+      ip => '127.0.1.1',
+      host_aliases => ["$hostname"]
+  }
 
   file {
     $cert_directory:
@@ -82,8 +97,6 @@ class shib2common::certificate (
       content => template("shib2common/expiry.sh.erb"),
       require => File["${cert_directory}"];
     }
-
-    
 
   }
 

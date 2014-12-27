@@ -169,5 +169,4 @@ class shib2common::augeas (
    }
   }
 
-
 }
