@@ -65,7 +65,7 @@ class shib2common::certificate (
       mode    => '0600',
       source  => "puppet:///modules/shib2common/certs/${hostname}-key-server.pem",
       require => File[$cert_directory],
-      notify  => Exec['shib2-apache-restart'];
+      notify  => Service['httpd'];
 
     "${cert_directory}/cert-server.pem":
       ensure  => present,
@@ -74,7 +74,7 @@ class shib2common::certificate (
       mode    => '0600',
       source  => "puppet:///modules/shib2common/certs/${hostname}-cert-server.pem",
       require => File[$cert_directory],
-      notify  => Exec['shib2-apache-restart'];
+      notify  => Service['httpd'];
   }
 
   # Install certificate files. They should be present in ${cert_directory} directory and
@@ -82,7 +82,7 @@ class shib2common::certificate (
   download_file { "${cert_directory}/Terena-chain.pem":
     url     => 'https://ca.garr.it/mgt/Terena-chain.pem',
     require => File[$cert_directory],
-    notify  => Exec['shib2-apache-restart'],
+    notify  => Service['httpd'],
   }
 
   # if nagiosserver is set, the activities to verify certificate expiration

@@ -72,20 +72,17 @@ class shib2common::prerequisites(
             package { 'apache2-utils':
                ensure => installed, 
             }
-
-            ::apache::mod { 'authn_core': }
         }
 
         class { 'apache':
             default_vhost => false,
             mpm_module    => 'prefork',
-         #   require       => [Host ['localhost'], Host ["$fqdn"]],
+            require       => [Host ['localhost'], Host ["$fqdn"]],
         }
 
-        # Install the module SSL, Proxy, Proxy AJP, PHP5
+        # Install the module SSL, Proxy, Proxy AJP
         class { 'apache::mod::ssl': }
         class { 'apache::mod::proxy': }
-        #class { 'apache::mod::php': }
 
         if ($install_tomcat == true) {
             # Install Tomcat application server.
