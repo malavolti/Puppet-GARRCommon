@@ -42,10 +42,14 @@ class shib2common::prerequisites(
       path        => ['/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin'],
     }
  
+    # Execute an "apt-get update" and then install all packages
     Exec['apt-get update'] -> Package<| |>
     
-	  Package['unzip', 'wget'] -> Download_file <| |>
-	  Package['ruby-mysql'] -> Execute_mysql <| |>
+    # Install the packages "unzip" and "wget" before execute any Download_file
+    Package['unzip', 'wget'] -> Download_file <| |>
+
+    # Install "ruby-mysql" package before execute any Execute_mysql
+	 Package['ruby-mysql'] -> Execute_mysql <| |>
 	
     package { [
         'openssl',
@@ -64,16 +68,21 @@ class shib2common::prerequisites(
     if ($install_apache == true) {
         # Install Apache2 Web server and default modules for Prefork version.
 
+        if ($operatingsystem == 'Ubuntu' and $operatingsystemmajrelease == '14.04'){
+            package { 'apache2-utils':
+               ensure => installed, 
+            }
+        }
+
         class { 'apache':
             default_vhost => false,
             mpm_module    => 'prefork',
-            require       => Class['shib2common::certificate'],
+            require       => [Host ['localhost'], Host ["$fqdn"]],
         }
 
-        # Install the module SSL, Proxy, Proxy AJP, PHP5
+        # Install the module SSL, Proxy, Proxy AJP
         class { 'apache::mod::ssl': }
         class { 'apache::mod::proxy': }
-        class { 'apache::mod::php': }
 
         if ($install_tomcat == true) {
             # Install Tomcat application server.

@@ -50,6 +50,7 @@ class shib2common::java::package {
 
     'oracle-jdk7-installer':
       ensure  => installed,
+      install_options => '--force-yes',
       require => Exec['agree-to-jdk-license'];
   }
 
@@ -63,16 +64,10 @@ class shib2common::java::package {
 
   file_line {
     'java_environment_rule_1':
-      ensure  => present,
-      path    => '/etc/environment',
-      line    => "JAVA_HOME=${java_home}",
-      require => [Package['oracle-java7-installer'], Package['oracle-jdk7-installer']];
-
-    'java_environment_rule_2':
-      ensure  => present,
-      path    => '/etc/environment',
-      line    => 'JAVA_OPTS="-Djava.awt.headless=true -Xmx512M -XX:MaxPermSize=128m"',
-      require => [Package['oracle-java7-installer'], Package['oracle-jdk7-installer']];
+       ensure  => present,
+       path    => '/etc/environment',
+       line    => "JAVA_HOME=${java_home}",
+       require => [Package['oracle-java7-installer'], Package['oracle-jdk7-installer']]
   }
 
 }

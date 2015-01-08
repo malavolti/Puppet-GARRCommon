@@ -32,9 +32,24 @@ class shib2common::certificate (
   $nagiosserver     = undef,
 ) {
 
-  $curtomcat = $::tomcat::curtomcat
+  #$curtomcat = $::tomcat::curtomcat
   $cert_directory = '/root/certificates'
   $idp_home       = '/opt/shibboleth-idp'
+
+  host {
+   "localhost":
+      ensure => 'present',   
+      target => '/etc/hosts',
+      ip => '127.0.0.1',
+
+   ;
+
+    "$fqdn":
+      ensure => 'present',
+      target => '/etc/hosts',
+      ip => '127.0.1.1',
+      host_aliases => ["$hostname"]
+  }
 
   file {
     $cert_directory:
@@ -50,7 +65,7 @@ class shib2common::certificate (
       mode    => '0600',
       source  => "puppet:///modules/shib2common/certs/${hostname}-key-server.pem",
       require => File[$cert_directory],
-      notify  => Exec['shib2-apache-restart'];
+      notify  => Service['httpd'];
 
     "${cert_directory}/cert-server.pem":
       ensure  => present,
@@ -59,7 +74,7 @@ class shib2common::certificate (
       mode    => '0600',
       source  => "puppet:///modules/shib2common/certs/${hostname}-cert-server.pem",
       require => File[$cert_directory],
-      notify  => Exec['shib2-apache-restart'];
+      notify  => Service['httpd'];
   }
 
   # Install certificate files. They should be present in ${cert_directory} directory and
@@ -67,7 +82,7 @@ class shib2common::certificate (
   download_file { "${cert_directory}/Terena-chain.pem":
     url     => 'https://ca.garr.it/mgt/Terena-chain.pem',
     require => File[$cert_directory],
-    notify  => Exec['shib2-apache-restart'],
+    notify  => Service['httpd'],
   }
 
   # if nagiosserver is set, the activities to verify certificate expiration
@@ -82,8 +97,6 @@ class shib2common::certificate (
       content => template("shib2common/expiry.sh.erb"),
       require => File["${cert_directory}"];
     }
-
-    
 
   }
 
