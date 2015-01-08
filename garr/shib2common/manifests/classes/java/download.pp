@@ -24,18 +24,4 @@ class shib2common::java::download {
   #  require => Package["oracle-java7-installer", "oracle-jdk7-installer"],
   #}
 
-  file_line {
-    'java_environment_rule_1':
-      ensure  => present,
-      path    => '/etc/environment',
-      line    => "JAVA_HOME=${::shib2idp::java::params::java_home}",
-      require => Download_file[$::shib2idp::java::params::java_home];
-
-    'java_environment_rule_2':
-      ensure  => present,
-      path    => '/etc/environment',
-      line    => 'JAVA_OPTS="-Djava.awt.headless=true -Xmx512M -XX:MaxPermSize=128m"',
-      require => Download_file[$::shib2idp::java::params::java_home];
-  }
-
 }

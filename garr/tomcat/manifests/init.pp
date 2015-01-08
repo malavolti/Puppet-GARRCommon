@@ -140,6 +140,7 @@ class tomcat {
     $catalina_home = $tomcat6::catalina_home
     
     $curtomcat = "tomcat6"
+
   }elsif($lsbdistid == 'Ubuntu'){
     include tomcat::tomcat7
     $tomcat_home = $tomcat7::tomcat_home
