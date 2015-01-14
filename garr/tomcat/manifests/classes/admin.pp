@@ -7,20 +7,20 @@
 # +tomcat_admin_password+:: If the Tomcat administration interface is going to be installed this parameter permits to specify the password for the 'admin' user used by tomcat to access the administration interface. 
 # +tomcat_manager_password+:: If the Tomcat administration interface is going to be installed this parameter permits to specify the password for the 'manager' user used by tomcat to access the administration interface.
 #
-class tomcat::admin(
-  $tomcat_admin_password = 'adminpassword',
-  $tomcat_manager_password = 'managerpassword',
-) {
-  
-  $curtomcat = $::tomcat::curtomcat
-  
-  Class[$curtomcat] -> Class['tomcat::admin']
+	class tomcat::admin(
+	  $tomcat_admin_password = 'adminpassword',
+	  $tomcat_manager_password = 'managerpassword',
+	) {
+	  
+	$curtomcat = $::tomcat::curtomcat
   
   package { "tomcat-admin":
     ensure => present,
     name   => "${curtomcat}-admin",
     require => Package[$curtomcat],
   }
+  
+  Class["Tomcat::Admin"] ~> Service[$curtomcat]
   
   augeas { "tomcat_users_role_manager":
     context   => "/files/etc/${curtomcat}/tomcat-users.xml",

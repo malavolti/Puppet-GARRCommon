@@ -14,10 +14,12 @@ class tomcat::tomcat7 {
   package {
     ["liblog4j1.2-java", "libcommons-logging-java", "libtomcat7-java"]:
       ensure  => present,
+      before  => Class['tomcat::admin'],
       require => Class['shib2common::java::package'];
   
     ["tomcat7-common", "tomcat7"]:
       ensure  => present,
+      before  => Class['tomcat::admin'],
       require => Class['shib2common::java::package'];
 
   }
@@ -33,16 +35,6 @@ class tomcat::tomcat7 {
   $catalina_home = '/var/lib/tomcat7'
   
   # Default JVM options
-  file {"${tomcat_home}/bin/setenv.sh":
-    content  => join(['export JAVA_HOME="/usr/lib/jvm/java-7-oracle"',
-                      'export JAVA_ENDORSED_DIRS="/usr/share/tomcat7/endorsed"'], "\n"),
-    owner   => "root",
-    group   => "root",
-    mode    => 755,
-    require => Package["tomcat7"],
-    before  => Service["tomcat7"],
-  }
-  
   file { "log4j.properties":
     path => "${catalina_home}/conf/log4j.properties",
     source => $::log4j_conffile ? {
@@ -50,6 +42,7 @@ class tomcat::tomcat7 {
       ""      => "puppet:///modules/tomcat/conf/log4j.rolling.properties",
     },
     require => Package["tomcat7"],
+    before  => Service["tomcat7"],
   }
   
   # Verify that /etc/environment has the correct lines
