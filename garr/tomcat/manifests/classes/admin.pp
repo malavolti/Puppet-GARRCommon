@@ -21,6 +21,7 @@
   }
   
   Class["Tomcat::Admin"] ~> Service[$curtomcat]
+  Package[$curtomcat] -> Class['Tomcat::Admin']
   
   augeas { "tomcat_users_role_manager":
     context   => "/files/etc/${curtomcat}/tomcat-users.xml",

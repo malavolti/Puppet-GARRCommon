@@ -14,14 +14,11 @@ class tomcat::tomcat7 {
   package {
     ["liblog4j1.2-java", "libcommons-logging-java", "libtomcat7-java"]:
       ensure  => present,
-      before  => Class['tomcat::admin'],
       require => Class['shib2common::java::package'];
   
     ["tomcat7-common", "tomcat7"]:
       ensure  => present,
-      before  => Class['tomcat::admin'],
       require => Class['shib2common::java::package'];
-
   }
 
   service { "tomcat7":

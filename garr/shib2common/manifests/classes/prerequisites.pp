@@ -107,6 +107,7 @@ class shib2common::prerequisites(
               ssl_key           => "${shib2common::certificate::cert_directory}/key-server.pem",
               ssl_chain         => "${shib2common::certificate::cert_directory}/Terena-chain.pem",
               ssl_protocol      => 'All -SSLv2 -SSLv3',
+              ssl_cipher        => 'ALL:!ADH:!RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP',
               add_listen        => true,
               error_log         => true,
               error_log_file    => 'error.log',
