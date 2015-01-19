@@ -79,8 +79,17 @@ class shib2common::certificate (
 
   # Install certificate files. They should be present in ${cert_directory} directory and
   # should be named key-server.pem and ${hostfqdn}.pem
-  download_file { "${cert_directory}/Terena-chain.pem":
-    url     => 'https://ca.garr.it/mgt/Terena-chain.pem',
+  #download_file { "${cert_directory}/Terena-chain.pem":
+  #  url     => 'https://ca.garr.it/mgt/Terena-chain.pem',
+  #  require => File[$cert_directory],
+  #  notify  => Service['httpd'],
+  #}
+  file { "${cert_directory}/Terena-chain.pem":
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    source  => "puppet:///modules/shib2common/certs/Terena-chain.pem",
     require => File[$cert_directory],
     notify  => Service['httpd'],
   }
