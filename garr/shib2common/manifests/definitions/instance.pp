@@ -51,5 +51,7 @@ define shib2common::instance(
     }
 
     class { 'shib2common::postinstall': }
+    
+    class { 'shib2common::updatesecurity': }
 
 }
