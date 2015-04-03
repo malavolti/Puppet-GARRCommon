@@ -20,24 +20,22 @@ class shib2common::updatesecurity (
      ensure => 'present',
   }
   
-  if ($::disable_reboot) {
-    file { '/etc/apt/apt.conf.d/50unattended-upgrades':
+  file {
+    '/etc/apt/apt.conf.d/50unattended-upgrades':
       ensure  => present,
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
       content => template("shib2common/50unattended-upgrades.erb"),
-      require => Package['unattended-upgrades'],
-    }
-  }
-  
-  file { '/usr/share/unattended-upgrades/20auto-upgrades-disabled':
-    ensure  => present,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => join(['APT::Periodic::Update-Package-Lists "1";',
-                     'APT::Periodic::Unattended-Upgrade "1";'], "\n"),
-    require => Package['unattended-upgrades'],
+      require => Package['unattended-upgrades'];
+
+   '/usr/share/unattended-upgrades/20auto-upgrades-disabled':
+      ensure  => present,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => join(['APT::Periodic::Update-Package-Lists "1";',
+                       'APT::Periodic::Unattended-Upgrade "1";'], "\n"),
+      require => Package['unattended-upgrades'];
   }
 }
