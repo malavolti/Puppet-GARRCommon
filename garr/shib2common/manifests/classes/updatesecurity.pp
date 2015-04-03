@@ -12,7 +12,7 @@
 # Sample Usage:
 # This class file is not called directly.
 #
-define shib2common::updatesecurity(
+class shib2common::updatesecurity (
   $disable_reboot          = true,
 ) {
 
