@@ -33,7 +33,7 @@ class shib2common::updatesecurity (
       ensure => absent,
       require => Package['unattended-upgrades'];
 
-   '/usr/share/unattended-upgrades/20auto-upgrades':
+    '/usr/share/unattended-upgrades/20auto-upgrades':
       ensure  => present,
       owner   => 'root',
       group   => 'root',
