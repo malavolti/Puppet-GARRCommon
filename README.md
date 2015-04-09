@@ -6,3 +6,4 @@ This project contains puppet modules for different pieces of software that are r
 GARR modules developed on Puppet.
 
 This project is not intended to be used by itself but it is leveraged by other GARR Puppet modules.
+
