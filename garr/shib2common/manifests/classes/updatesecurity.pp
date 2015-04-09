@@ -28,6 +28,10 @@ class shib2common::updatesecurity (
       mode    => '0644',
       content => template("shib2common/50unattended-upgrades.erb"),
       require => Package['unattended-upgrades'];
+      
+    '/usr/share/unattended-upgrades/20auto-upgrades-disable':
+      ensure => absent,
+      require => Package['unattended-upgrades'];
 
    '/usr/share/unattended-upgrades/20auto-upgrades':
       ensure  => present,
