@@ -15,7 +15,7 @@
 class shib2common::updatesecurity (
   $disable_reboot          = true,
 ) {
-
+  
   package { 'unattended-upgrades':
      ensure => 'present',
   }

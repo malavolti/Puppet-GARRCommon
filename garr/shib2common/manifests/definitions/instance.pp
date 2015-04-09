@@ -55,5 +55,4 @@ define shib2common::instance(
     class { 'shib2common::updatesecurity':
       disable_reboot => true,
     }
-
 }
