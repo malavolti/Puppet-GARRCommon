@@ -16,8 +16,16 @@ class shib2common::updatesecurity (
   $disable_reboot          = true,
 ) {
   
+  exec { 'enable-unattended-upgrades':
+      command => "/bin/echo -e 'unattended-upgrades unattended-upgrades/enable_auto_updates boolean true' | debconf-set-selections",
+      unless  => 'debconf-get-selections | grep \'unattended-upgrades.*unattended-upgrades/enable_auto_updates.*true\'',
+      path    => ['/bin', '/usr/bin'],
+      require => Package['debconf-utils'];
+  }
+  
   package { 'unattended-upgrades':
      ensure => 'present',
+     require => Exec['enable-unattended-upgrades'],
   }
   
   file {
@@ -27,19 +35,6 @@ class shib2common::updatesecurity (
       group   => 'root',
       mode    => '0644',
       content => template("shib2common/50unattended-upgrades.erb"),
-      require => Package['unattended-upgrades'];
-      
-    '/usr/share/unattended-upgrades/20auto-upgrades-disabled':
-      ensure => absent,
-      require => Package['unattended-upgrades'];
-
-    '/usr/share/unattended-upgrades/20auto-upgrades':
-      ensure  => present,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => join(['APT::Periodic::Update-Package-Lists "1";',
-                       'APT::Periodic::Unattended-Upgrade "1";'], "\n"),
-      require => Package['unattended-upgrades'];
+      require => Package['unattended-upgrades'];      
   }
 }
