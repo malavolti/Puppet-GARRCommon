@@ -156,7 +156,7 @@ let doc = (sep_osp . (prolog  | comment | doctype | pi_instruction))* .
 
 let lns = doc
 
-let filter = (incl "/usr/local/src/shibboleth-identityprovider/src/main/webapp/WEB-INF/*.xml")
+let filter = (incl "/usr/local/src/shibboleth-identity-provider/src/main/webapp/WEB-INF/*.xml")
     . (incl "/etc/xml/catalog")
 
 let xfm = transform lns filter
