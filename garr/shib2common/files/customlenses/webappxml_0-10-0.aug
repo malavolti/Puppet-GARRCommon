@@ -1,4 +1,4 @@
-(* XML lens for Augeas
+(* WebAppXML lens for Augeas
    Author: Francis Giraldeau <francis.giraldeau@usherbrooke.ca>
 
    Reference: http://www.w3.org/TR/2006/REC-xml11-20060816/
@@ -13,18 +13,18 @@ autoload xfm
  *************************************************************************)
 
 let dels (s:string)   = del s s
-let spc               = /[ \t\r\n]+/
-let osp               = /[ \t\r\n]*/
-let sep_spc           = del /[ \t\r\n]+/ " "
-let sep_osp           = del /[ \t\r\n]*/ ""
-let sep_eq            = del /[ \t\r\n]*=[ \t\r\n]*/ "="
+let spc               = /[ \t\n]+/
+let osp               = /[ \t\n]*/
+let sep_spc           = del /[ \t\n]+/ " "
+let sep_osp           = del /[ \t\n]*/ ""
+let sep_eq            = del /[ \t\n]*=[ \t\n]*/ "="
 
 let nmtoken             = /[a-zA-Z:_][a-zA-Z0-9:_.-]*/
 let word                = /[a-zA-Z][a-zA-Z0-9._-]*/
-let char                = /.|(\r?\n)/
+let char                = /.|\n/
 (* if we hide the quotes, then we can only accept single or double quotes *)
 (* otherwise a put ambiguity is raised *)
-let sto_dquote          = dels "\"" . store /[^"]*/ . dels "\"" (* " *)
+let sto_dquote          = dels "\"" . store /[^"]*/ . dels "\""
 let sto_squote          = dels "'" . store /[^']*/ . dels "'"
 
 let comment             = [ label "#comment" .
@@ -34,7 +34,7 @@ let comment             = [ label "#comment" .
 
 let pi_target           = nmtoken - /[Xx][Mm][Ll]/
 let empty               = Util.empty
-let del_end             = del />[\r?\n]?/ ">\n"
+let del_end             = del />[\n]?/ ">\n"
 let del_end_simple      = dels ">"
 
 (* This is siplified version of processing instruction
@@ -42,7 +42,7 @@ let del_end_simple      = dels ">"
  * must not contain "?>". We restrict too much by not allowing any
  * "?" nor ">" in PI
  *)
-let pi                  = /[^ \r\n\t]|[^ \r\n\t][^?>]*[^ \r\n\t]/
+let pi                  = /[^ \n\t]|[^ \n\t][^?>]*[^ \n\t]/
 
 (************************************************************************
  *                            Attributes
@@ -74,7 +74,7 @@ let att_def       = counter "att_id" .
                       [ label "#name" . store word . sep_spc ] .
                       [ label "#type" . store att_type . sep_spc ] .
                       ([ key   /#REQUIRED|#IMPLIED/ ] |
-                       [ label "#FIXED" . del /#FIXED[ \r\n\t]*|/ "" . sto_dquote ]) ]*
+                       [ label "#FIXED" . del /#FIXED[ \n\t]*|/ "" . sto_dquote ]) ]*
 
 let att_list_def = decl_def /!ATTLIST/ att_def
 
@@ -89,24 +89,8 @@ let decl_outer    = sep_osp . del /\[[ \n\t\r]*/ "[\n" .
 
 let doctype       = decl_def /!DOCTYPE/ (decl_outer|id_def)
 
-(* General shape of an attribute
- * q   is the regexp matching the quote character for the value
- * qd  is the default quote character
- * brx is what the actual attribute value must match *)
-let attval (q:regexp) (qd:string) (brx:regexp) =
-  let quote = del q qd in
-  let body = store brx in
-  [ sep_spc . key nmtoken . sep_eq . square quote body quote ]
-
-(* We treat attributes according to one of the following three patterns:
-   attval1 : values that must be quoted with single quotes
-   attval2 : values that must be quoted with double quotes
-   attval3 : values that can be quoted with either *)
-let attributes    =
-  let attval1 = attval "'" "'" /[^']*"[^']*/ in (* " *)
-  let attval2 = attval "\"" "\"" /[^"]*'[^"]*/ in
-  let attval3 = attval /['"]/ "\"" /[^'\"]*/ in (* " *)
-  [ label "#attribute" . (attval1|attval2|attval3)+ ]
+let attributes    = [ label "#attribute" .
+                      [ sep_spc . key nmtoken . sep_eq . sto_dquote ]+ ]
 
 let prolog        = [ label "#declaration" .
                       dels "<?xml" .
@@ -125,16 +109,12 @@ let text      = [ label "#text" . store text_re ]
 let cdata     = [ label "#CDATA" . dels "<![CDATA[" .
                   store (char* - (char* . "]]>" . char*)) . dels "]]>" ]
 
-(* the value of nmtoken_del is always the nmtoken_key string *)
-let nmtoken_key = key nmtoken
-let nmtoken_del = del nmtoken "a"
-
 let element (body:lens) =
     let h = attributes? . sep_osp . dels ">" . body* . dels "</" in
-        [ dels "<" . square nmtoken_key h nmtoken_del . sep_osp . del_end ]
+        [ dels "<" . square nmtoken h . sep_osp . del_end ]
 
-let empty_element = [ dels "<" . nmtoken_key . value "#empty" .
-                      attributes? . sep_osp . del /\/>[\r?\n]?/ "/>\n" ]
+let empty_element = [ dels "<" . key nmtoken . value "#empty" .
+                      attributes? . sep_osp . del /\/>[\n]?/ "/>\n" ]
 
 let pi_instruction = [ dels "<?" . label "#pi" .
                        [ label "#target" . store pi_target ] .
@@ -157,6 +137,7 @@ let doc = (sep_osp . (prolog  | comment | doctype | pi_instruction))* .
 let lns = doc
 
 let filter = (incl "/usr/local/src/shibboleth-identityprovider/src/main/webapp/WEB-INF/*.xml")
-    . (incl "/etc/xml/catalog")
+    . (incl "/usr/local/src/shibboleth-identity-provider/src/main/webapp/WEB-INF/*.xml")
+    . Util.stdexcl
 
 let xfm = transform lns filter
