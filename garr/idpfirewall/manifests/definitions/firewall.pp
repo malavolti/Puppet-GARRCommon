@@ -17,6 +17,15 @@ define idpfirewall::firewall (
   class { 'firewall': }
 
   if($iptables_enable_network){
+    firewall { '100 redirect 80 to 8080 for localhost':
+      table    => 'nat',
+		  chain    => 'OUTPUT',
+		  outiface => 'lo',
+		  proto    => 'tcp',
+		  dport    => '80',
+		  jump     => 'REDIRECT',
+		  toports  => '8080'
+    } ->
     firewall { '104 allow SSH':
       port   => 22,
       proto  => 'tcp',
@@ -37,6 +46,15 @@ define idpfirewall::firewall (
     }
   }
   else{
+    firewall { '100 redirect 80 to 8080 for localhost':
+      table    => 'nat',
+      chain    => 'OUTPUT',
+      outiface => 'lo',
+      proto    => 'tcp',
+      dport    => '80',
+      jump     => 'REDIRECT',
+      toports  => '8080'
+    } ->
     firewall { '104 allow SSH':
       port   => 22,
       proto  => 'tcp',

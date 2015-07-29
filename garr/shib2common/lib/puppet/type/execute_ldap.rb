@@ -43,7 +43,7 @@ module Puppet
     
 		validate do
 			fail("rootdn parameter is required") if self[:rootdn].nil?
-      fail("rootpw parameter is required") if self[:rootpw].nil?
+			fail("rootpw parameter is required") if self[:rootpw].nil?
 			fail("hostname parameter is required") if self[:hostname].nil?
 			fail("ldif_search parameter is required") if self[:ldif_search].nil?
 			fail("ldif parameter is required") if self[:ldif].nil?

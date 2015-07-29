@@ -33,10 +33,10 @@ define shib2common::instance(
 ) {
 
     class { 'shib2common::certificate':
-        hostfqdn         => $hostfqdn,
-        keystorepassword => $keystorepassword,
-        mailto           => $mailto,
-        nagiosserver     => $nagiosserver,
+      hostfqdn         => $hostfqdn,
+      keystorepassword => $keystorepassword,
+      mailto           => $mailto,
+      nagiosserver     => $nagiosserver,
     }
 
     class { 'shib2common::prerequisites':
@@ -51,5 +51,8 @@ define shib2common::instance(
     }
 
     class { 'shib2common::postinstall': }
-
+    
+    class { 'shib2common::updatesecurity':
+      disable_reboot => true,
+    }
 }

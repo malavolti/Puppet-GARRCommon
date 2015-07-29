@@ -24,7 +24,7 @@ class idpfirewall::pre{
     action => 'accept',
   }->
   firewall { '004 allow HTTP HTTPS access':
-    port   => [80, 8080, 443, 8443],
+    port   => [80, 443, 8443],
     proto  => 'tcp',
     action => 'accept',
   }

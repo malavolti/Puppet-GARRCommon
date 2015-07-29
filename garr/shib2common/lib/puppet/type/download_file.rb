@@ -3,12 +3,12 @@
 #
 # Example of declaration on the puppet manifests:
 #
-# 		download_file { "/usr/local/src/shibboleth-identityprovider-2.3.8":
-#        url => "http://shibboleth.net/downloads/identity-provider/2.3.8/shibboleth-identityprovider-2.3.8-bin.zip",
+# 		download_file { "/usr/local/src/shibboleth-identity-provider-2.3.8":
+#        url => "http://shibboleth.net/downloads/identity-provider/2.3.8/shibboleth-identity-provider-2.3.8-bin.zip",
 #			extract => 'zip',
 #			execute_command => [
-#				"/usr/bin/find /usr/local/src/shibboleth-identityprovider-2.3.8 -type d -exec /bin/chmod 755 {} \\;",
-#				"/usr/bin/find /usr/local/src/shibboleth-identityprovider-2.3.8 -type f -exec /bin/chmod 644 {} \\;",
+#				"/usr/bin/find /usr/local/src/shibboleth-identity-provider-2.3.8 -type d -exec /bin/chmod 755 {} \\;",
+#				"/usr/bin/find /usr/local/src/shibboleth-identity-provider-2.3.8 -type f -exec /bin/chmod 644 {} \\;",
 #			],
 #		}
 
