@@ -83,6 +83,7 @@ class shib2common::prerequisites(
         # Install the module SSL, Proxy, Proxy AJP
         class { 'apache::mod::ssl': }
         class { 'apache::mod::proxy': }
+        class { 'apache::mod::headers': }
 
         if ($install_tomcat == true) {
             # Install Tomcat application server.
@@ -107,13 +108,14 @@ class shib2common::prerequisites(
               ssl_key           => "${shib2common::certificate::cert_directory}/key-server.pem",
               ssl_chain         => "${shib2common::certificate::cert_directory}/Terena-chain.pem",
               ssl_protocol      => 'All -SSLv2 -SSLv3',
-              ssl_cipher        => 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK',
+              ssl_cipher        => "ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS",
               add_listen        => true,
               error_log         => true,
               error_log_file    => 'error.log',
               access_log        => true,
               access_log_file   => 'ssl_access.log',
               access_log_format => 'combined',
+              headers           => ['set Strict-Transport-Security "max-age=63072000; includeSubdomains; preload"','set X-Frame-Options DENY','set X-Content-Type-Options nosniff'],
               custom_fragment   => '
       <Directory /usr/lib/cgi-bin>
          SSLOptions +StdEnvVars
@@ -149,8 +151,8 @@ class shib2common::prerequisites(
       # MSIE 7 and newer should be able to use keepalive
       BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
       ',
-              require           => [Class['apache::mod::ssl', 'shib2common::certificate'], Apache::Mod['proxy_ajp']],
-            }
+              require           => [Class['apache::mod::ssl', 'apache::mod::headers', 'shib2common::certificate'], Apache::Mod['proxy_ajp']],
+           }
         }
     }
 }
